@@ -4,6 +4,9 @@
 // </auto-generated>
 //----------------------
 
+using AutoMapper;
+using LibraryAPI.LibraryService.Models;
+
 #pragma warning disable 108 // Disable "CS0108 '{derivedDto}.ToJson()' hides inherited member '{dtoBase}.ToJson()'. Use the new keyword if hiding was intended."
 #pragma warning disable 114 // Disable "CS0114 '{derivedDto}.RaisePropertyChanged(String)' hides inherited member 'dtoBase.RaisePropertyChanged(String)'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword."
 #pragma warning disable 472 // Disable "CS0472 The result of the expression is always 'false' since a value of type 'Int32' is never equal to 'null' of type 'Int32?'
@@ -18,12 +21,12 @@
 #pragma warning disable 8625 // Disable "CS8625 Cannot convert null literal to non-nullable reference type"
 #pragma warning disable 8765 // Disable "CS8765 Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes)."
 
-namespace LibraryAPI
+namespace LibraryAPI.LibraryService
 {
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public interface IController
+    public interface ILibraryService
     {
 
         /// <summary>
@@ -36,7 +39,7 @@ namespace LibraryAPI
 
         /// <returns>OK</returns>
 
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<BookWithId>> GetBooksAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<BookModel>> GetBooksAsync();
 
         /// <summary>
         /// Add a new book
@@ -48,7 +51,7 @@ namespace LibraryAPI
 
         /// <returns>Created</returns>
 
-        System.Threading.Tasks.Task<BookWithId> PostBookAsync(Book body);
+        System.Threading.Tasks.Task<BookModel> PostBookAsync(Book body);
 
         /// <summary>
         /// Get a specific book
@@ -60,7 +63,7 @@ namespace LibraryAPI
 
         /// <returns>OK</returns>
 
-        System.Threading.Tasks.Task<BookWithId> GetBookAsync(int id);
+        Task<BookModel?> GetBookAsync(int id);
 
         /// <summary>
         /// Update a book
@@ -74,19 +77,21 @@ namespace LibraryAPI
 
         /// <returns>OK</returns>
 
-        System.Threading.Tasks.Task<BookWithId> PutBookAsync(int id, Book body);
+        System.Threading.Tasks.Task<BookModel> PutBookAsync(int id, Book body);
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
 
-    public partial class Controller : Microsoft.AspNetCore.Mvc.ControllerBase
+    public partial class LibraryController : Microsoft.AspNetCore.Mvc.ControllerBase
     {
-        private IController _implementation;
+        private ILibraryService _libraryService;
+        private readonly IMapper _mapper;
 
-        public Controller(IController implementation)
+        public LibraryController(ILibraryService libraryService, IMapper mapper)
         {
-            _implementation = implementation;
+            _libraryService = libraryService;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -96,11 +101,12 @@ namespace LibraryAPI
         /// Retrieve a list of all books in the library.
         /// </remarks>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("books")]
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<BookWithId>> GetBooks()
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/books")]
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<BookWithId>> GetBooks()
         {
 
-            return _implementation.GetBooksAsync();
+           var books = await _libraryService.GetBooksAsync();
+           return _mapper.Map<ICollection<BookWithId>>(books as ICollection<BookModel>);
         }
 
         /// <summary>
@@ -110,11 +116,11 @@ namespace LibraryAPI
         /// Add a new book to the library.
         /// </remarks>
         /// <returns>Created</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("book")]
-        public System.Threading.Tasks.Task<BookWithId> PostBook([Microsoft.AspNetCore.Mvc.FromBody] Book body)
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/book")]
+        public async System.Threading.Tasks.Task<BookWithId> PostBook([Microsoft.AspNetCore.Mvc.FromBody] Book body)
         {
 
-            return _implementation.PostBookAsync(body);
+            return _mapper.Map<BookWithId>(await _libraryService.PostBookAsync(body));
         }
 
         /// <summary>
@@ -124,11 +130,11 @@ namespace LibraryAPI
         /// Retrieve a specific book by its ID.
         /// </remarks>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("book/{id}")]
-        public System.Threading.Tasks.Task<BookWithId> GetBook(int id)
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/book/{id}")]
+        public async System.Threading.Tasks.Task<BookWithId> GetBook(int id)
         {
 
-            return _implementation.GetBookAsync(id);
+            return _mapper.Map<BookWithId>(await _libraryService.GetBookAsync(id));
         }
 
         /// <summary>
@@ -138,11 +144,11 @@ namespace LibraryAPI
         /// Update an existing book by its ID.
         /// </remarks>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("book/{id}")]
-        public System.Threading.Tasks.Task<BookWithId> PutBook(int id, [Microsoft.AspNetCore.Mvc.FromBody] Book body)
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("api/book/{id}")]
+        public async System.Threading.Tasks.Task<BookWithId> PutBook(int id, [Microsoft.AspNetCore.Mvc.FromBody] Book body)
         {
 
-            return _implementation.PutBookAsync(id, body);
+            return _mapper.Map<BookWithId>(await _libraryService.PutBookAsync(id, body));
         }
 
     }
@@ -184,7 +190,7 @@ namespace LibraryAPI
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset PublishedDate { get; set; }
 
-    }
+    }   
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     internal class DateFormatConverter : Newtonsoft.Json.Converters.IsoDateTimeConverter
