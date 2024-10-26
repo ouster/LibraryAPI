@@ -2,13 +2,13 @@ using System;
 
 namespace LibraryAPI.LibraryService.Models;
 
-public class BookModel
+public class BookModel : CreateBookModel
 {
     public BookModel()
     {
     }
 
-    public BookModel(int id, string title, string author, string isbn, DateTime publishedDate)
+    public BookModel(int id, string title, string author, string isbn, DateTime publishedDate) : base(title, author, isbn, publishedDate)
     {
         Id = id;
         Title = title;
@@ -18,8 +18,5 @@ public class BookModel
     }
 
     public int Id { get; set; }
-    public string Title { get; set; }
-    public string Author { get; set; }
-    public string Isbn { get; set; }
-    public DateTime PublishedDate { get; set; }
+
 }

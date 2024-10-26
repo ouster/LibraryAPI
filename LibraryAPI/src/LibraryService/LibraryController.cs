@@ -27,10 +27,9 @@ using Moq;
 #pragma warning disable 8765 // Disable "CS8765 Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes)."
 
 namespace LibraryAPI.LibraryService
-{
+{ // TODO review generated guff as distracting
     using System = global::System;
 
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
 
     [ApiController]
     [Route("api/v0.1/library")]
@@ -43,6 +42,7 @@ namespace LibraryAPI.LibraryService
         }
     }
     
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     [ApiVersion("0.1")]
     public partial class LibraryController : LibraryBaseController
     {
@@ -78,10 +78,10 @@ namespace LibraryAPI.LibraryService
         /// </remarks>
         /// <returns>Created</returns>
         [HttpPost("book")]
-        public async System.Threading.Tasks.Task<BookWithId> PostBook([Microsoft.AspNetCore.Mvc.FromBody] Book body)
+        public async System.Threading.Tasks.Task<BookWithId> PostBook([Microsoft.AspNetCore.Mvc.FromBody] Book book)
         {
 
-            return _mapper.Map<BookWithId>(await _libraryService.PostBookAsync(body));
+            return _mapper.Map<BookWithId>(await _libraryService.AddBookAsync(_mapper.Map<BookModel>(book)));
         }
 
         /// <summary>
@@ -114,10 +114,10 @@ namespace LibraryAPI.LibraryService
         [HttpPut("book/{id}")]
         [ProducesResponseType(typeof(BookWithId), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async System.Threading.Tasks.Task<BookWithId> PutBook(int id, [Microsoft.AspNetCore.Mvc.FromBody] Book body)
+        public async System.Threading.Tasks.Task<BookWithId> PutBook(int id, [Microsoft.AspNetCore.Mvc.FromBody] Book book)
         {
 
-            return _mapper.Map<BookWithId>(await _libraryService.PutBookAsync(id, body));
+            return _mapper.Map<BookWithId>(await _libraryService.UpdateBookAsync(id, _mapper.Map<BookModel>(book)));
         }
 
     }
@@ -125,6 +125,19 @@ namespace LibraryAPI.LibraryService
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class Book
     {
+        public Book()
+        {
+            
+        }
+        
+        public Book(string title, string author, string isbn, System.DateTimeOffset publishedDate)
+        {
+            Title = title;
+            Author = author;
+            Isbn = isbn;
+            PublishedDate = publishedDate;
+        }
+        
         [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Title { get; set; }
 

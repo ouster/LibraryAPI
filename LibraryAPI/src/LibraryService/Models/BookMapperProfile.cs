@@ -8,13 +8,18 @@ public class BookMapperProfile : Profile
     public BookMapperProfile()
     {
         CreateMap<BookModel, BookWithId>()
-            
-            .ForMember(dest => dest.Id, opt => opt.MapFrom<int>(src => src.Id) )
-            .ForMember(dest => dest.Title, opt => opt.MapFrom<string>(src => src.Title) )
-            .ForMember(dest => dest.Author, opt => opt.MapFrom<string>(src => src.Author) )
-            .ForMember(dest => dest.Isbn, opt => opt.MapFrom<string>(src => src.Isbn) )
-            .ForMember(dest => dest.PublishedDate, opt => opt.MapFrom(src => new DateTimeOffset(src.PublishedDate, TimeSpan.Zero)));
-            ;
+            .ConstructUsing(src =>
+                new BookWithId(src.Id, src.Title, src.Author, src.Isbn, new DateTimeOffset(src.PublishedDate, TimeSpan.Zero)));
+        
+        CreateMap<CreateBookModel, Book>()
+            .ConstructUsing(src => new Book(src.Title, src.Author, src.Isbn, DateTimeOffset.Now));
+        
+
+        CreateMap<Book, CreateBookModel>()
+            .ForMember(dest => dest.PublishedDate, opt => opt.MapFrom(src => src.PublishedDate.UtcDateTime));
+
+        CreateMap<BookModel, Book>()
+            .ConstructUsing(src => new Book(src.Title, src.Author, src.Isbn, src.PublishedDate));
     }
 }
 

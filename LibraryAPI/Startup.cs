@@ -36,7 +36,8 @@ public class Startup
         SetupDbContext(services);
 
         // Register other services
-        services.AddScoped<ILibraryService, LibraryService.LibraryDbService>();
+        services.AddScoped<ILibraryService, LibraryService.LibraryService>();
+        services.AddScoped(typeof(IAsyncRepository<>), typeof(AsyncEfRepository<>));
 
         // Add AutoMapper, controllers, and Swagger
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -45,11 +46,7 @@ public class Startup
         
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(/*c =>
-        {
-            c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "Library API", Version = "v1.0" });
-            c.SwaggerDoc("v2.0", new OpenApiInfo { Title = "Library API", Version = "v2.0" });
-        }*/);
+        services.AddSwaggerGen();
 
     }
 
@@ -100,7 +97,7 @@ public class Startup
             
             // Valid automapper?
             var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
-            mapper.ConfigurationProvider.AssertConfigurationIsValid(); //
+            mapper.ConfigurationProvider.AssertConfigurationIsValid(); 
         }
         else
         {

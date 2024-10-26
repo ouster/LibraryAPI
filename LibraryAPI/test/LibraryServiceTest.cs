@@ -15,7 +15,7 @@ using Xunit;
 public class LibraryServiceTests : IDisposable
 {
     private readonly DevAppDbContext _context;
-    private readonly LibraryDbService _libraryService;
+    private readonly LibraryService.LibraryService _libraryService;
 
     public LibraryServiceTests()
     {
@@ -25,9 +25,10 @@ public class LibraryServiceTests : IDisposable
             .UseInMemoryDatabase(databaseName: "UnitTestDatabase")
             .Options;
 
-        var mockLogger = new Mock<ILogger<LibraryDbService>>();
+        var mockLogger = new Mock<ILogger<LibraryService.LibraryService>>();
         _context = new DevAppDbContext(options);
-        _libraryService = new LibraryService.LibraryDbService(_context, mockLogger.Object);
+        var mockRepo = new Mock<IAsyncRepository<BookModel>>();
+        _libraryService = new LibraryService.LibraryService(mockRepo.Object, mockLogger.Object);
     }
 
     [Fact]
@@ -54,7 +55,7 @@ public class LibraryServiceTests : IDisposable
 
         // Assert: Check if the result matches the expected
         Assert.NotNull(result);
-        Assert.Equal(2, result.Count);
+        Assert.Equal(2, result.Count());
         Assert.Equal("Book One", result.ElementAt(0).Title as string);
         Assert.Equal("Book Two", result.ElementAt(1).Title as string);
     }
@@ -90,6 +91,57 @@ public class LibraryServiceTests : IDisposable
         {
         }
     }
+    
+    [Fact]
+    public async Task AddBookAsync_AddsBookSuccessfully()
+    {
+        // Arrange: Create a new book model
+        var newBook = new BookModel
+        {
+            Id = 3,
+            Title = "New Book",
+            Author = "New Author",
+            Isbn = "1122334455667",
+            PublishedDate = DateTime.Now
+        };
+
+        // Act: Add the new book using the service
+        await _libraryService.AddBookAsync(newBook);
+
+        // Assert: Verify the book was added
+        var addedBook = await _libraryService.GetBookAsync(newBook.Id);
+        Assert.NotNull(addedBook);
+        Assert.Equal("New Book", addedBook.Title);
+        Assert.Equal("New Author", addedBook.Author);
+    }
+
+    [Fact]
+    public async Task UpdateBookAsync_UpdatesBookSuccessfully()
+    {
+        // Arrange: Seed a book to update
+        var bookToUpdate = new BookModel
+        {
+            Id = 1,
+            Title = "Old Title",
+            Author = "Old Author",
+            Isbn = "9876543210987",
+            PublishedDate = DateTime.Now
+        };
+        _context.Books.Add(bookToUpdate);
+        await _context.SaveChangesAsync();
+
+        // Act: Update the book's details
+        bookToUpdate.Title = "Updated Title";
+        bookToUpdate.Author = "Updated Author";
+        await _libraryService.UpdateBookAsync(1, bookToUpdate);
+
+        // Assert: Verify the book details were updated
+        var updatedBook = await _libraryService.GetBookAsync(bookToUpdate.Id);
+        Assert.NotNull(updatedBook);
+        Assert.Equal("Updated Title", updatedBook.Title);
+        Assert.Equal("Updated Author", updatedBook.Author);
+    }
+
 
     public void Dispose()
     {

@@ -53,8 +53,9 @@ public class LibraryControllerTests(WebApplicationFactory<Program> factory) : Ap
 
         var createdBook = await response.Content.ReadFromJsonAsync<BookWithId>();
         createdBook.Should().NotBeNull();
-        createdBook.Title.Should().Be(newBook.Title);
-        createdBook.Author.Should().Be(newBook.Author);
+        createdBook?.Title.Should().Be(newBook.Title);
+        createdBook?.Author.Should().Be(newBook.Author);
+        createdBook?.Id.Should().BePositive();
     }
 
     [Fact]
