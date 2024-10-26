@@ -48,12 +48,20 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=245588ad_002Dcc09_002D4c67_002Da26b_002Daeab0fd104f9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="LibraryServiceTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Solution /&gt;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5a24b9fa_002Dc733_002D413f_002Da6e4_002D4182a8b72081/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ValidateBookModelToBookWithIdMapping #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;ProjectFile&gt;FD80BA6B-904A-40D8-93D7-286BEFFC88D9/d:test/f:AutoMapperTest.cs&lt;/ProjectFile&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5c0d818e_002Dd8fc_002D4fdd_002D8d6b_002D71a46d407842/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ValidateBookModelToBookWithIdMapping" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::FD80BA6B-904A-40D8-93D7-286BEFFC88D9::net8.0::LibraryAPI.test.AutoMapperTest.ValidateBookModelToBookWithIdMapping&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5c0fc1e0_002D9e4e_002D4a33_002Dab41_002D4b94fd0177b9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetBookAsync_ThrowsKeyNotFound_WhenBookDoesNotExist #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::FD80BA6B-904A-40D8-93D7-286BEFFC88D9::net8.0::LibraryAPI.test.LibraryServiceTests.GetBookAsync_ThrowsKeyNotFound_WhenBookDoesNotExist&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9e941a16_002D7d1e_002D41e6_002Da8ce_002D300454c08885/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ValidateAutoMapperConfiguration" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9e941a16_002D7d1e_002D41e6_002Da8ce_002D300454c08885/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ValidateAutoMapperConfiguration" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Or&gt;
     &lt;ProjectFile&gt;FD80BA6B-904A-40D8-93D7-286BEFFC88D9/d:test/f:AutoMapperTest.cs&lt;/ProjectFile&gt;
     &lt;ProjectFile&gt;35D4CF9E-2897-42AB-9544-4752B9D69CE6/f:LibraryControllerTests.cs&lt;/ProjectFile&gt;

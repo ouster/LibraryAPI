@@ -9,8 +9,7 @@ public class BookMapperProfile : Profile
     {
         CreateMap<BookModel, BookWithId>()
             .ConstructUsing(src =>
-                new BookWithId(src.Id, src.Title, src.Author, src.Isbn,
-                    new DateTimeOffset(src.PublishedDate, TimeSpan.Zero)));
+                new BookWithId(src.Id, src.Title, src.Author, src.Isbn, src.PublishedDate));
 
         CreateMap<CreateBookModel, Book>()
             .ConstructUsing(src => new Book(src.Title, src.Author, src.Isbn, src.PublishedDate));

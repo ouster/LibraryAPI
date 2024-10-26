@@ -43,7 +43,11 @@ public class AutoMapperTest : IDisposable
         var expectedBookWithId = new BookWithId(1, bookModel.Title, bookModel.Author, bookModel.Isbn, bookModel.PublishedDate);
         var actualBookWithId = _mapper.Map<BookWithId>(bookModel);
         
-        Assert.Equivalent(expectedBookWithId, actualBookWithId);
+        Assert.Equal(expectedBookWithId.Id, actualBookWithId.Id);
+        Assert.Equal(expectedBookWithId.Title, actualBookWithId.Title);
+        Assert.Equal(expectedBookWithId.Author, actualBookWithId.Author);
+        Assert.Equal(expectedBookWithId.Isbn, actualBookWithId.Isbn);
+        Assert.Equal(expectedBookWithId.PublishedDate, actualBookWithId.PublishedDate);
     }
     
     [Fact]
@@ -53,9 +57,12 @@ public class AutoMapperTest : IDisposable
         
         var book = new Book("Title", "Author", "Isbn", now);
         var expectedBookModel = new Book(book.Title, book.Author, book.Isbn, book.PublishedDate);
-        var actualBookModel = _mapper.Map<BookModel>(book);
+        var actualBookModel = _mapper.Map<CreateBookModel>(book);
         
-        Assert.Equivalent(expectedBookModel, actualBookModel);
+        Assert.Equal(expectedBookModel.Title, actualBookModel.Title);
+        Assert.Equal(expectedBookModel.Author, actualBookModel.Author);
+        Assert.Equal(expectedBookModel.Isbn, actualBookModel.Isbn);
+        Assert.Equal(expectedBookModel.PublishedDate, actualBookModel.PublishedDate);
     }
 
     public void Dispose()
