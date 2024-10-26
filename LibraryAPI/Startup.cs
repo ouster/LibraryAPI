@@ -27,6 +27,9 @@ public class Startup
     // Configure services
     public void ConfigureServices(IServiceCollection services)
     {
+        
+        services.AddLogging();
+        
         // Configure database context based on environment
         string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         

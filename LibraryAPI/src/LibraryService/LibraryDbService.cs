@@ -72,16 +72,19 @@ public interface IBookService
     Task<ICollection<BookModel>> GetBooksAsync();
 }
 
-public class LibraryDbService(DevAppDbContext context, ILogger<LibraryDbService> logger) : ILibraryService
+public class LibraryDbService : ILibraryService
 {
-    public List<BookModel> GetBooks()
+    private readonly DevAppDbContext _context;
+    private readonly ILogger<LibraryDbService> _logger;
+
+    public LibraryDbService(DevAppDbContext context, ILogger<LibraryDbService> logger)
     {
-        return context.Books.ToList();
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
-    
     public async Task<ICollection<BookModel>> GetBooksAsync()
     {
-        return await context.Books
+        return await _context.Books
             .Select(b => new BookModel
             {
                 Id = b.Id,
@@ -100,7 +103,7 @@ public class LibraryDbService(DevAppDbContext context, ILogger<LibraryDbService>
 
     public async Task<BookModel?> GetBookAsync(int id)
     {
-        var book = await context.Books
+        var book = await _context.Books
             .Where(b => b.Id == id) // Filter by ID
             .Select(b => new BookModel
             {
@@ -113,10 +116,11 @@ public class LibraryDbService(DevAppDbContext context, ILogger<LibraryDbService>
             .FirstOrDefaultAsync();
         
         if (book != null) return book;
-        
-        logger.LogError($"Book with ID {id} not found.");
-        throw new KeyNotFoundException($"Book with ID {id} not found.");
 
+        var msg = $"Book with ID {id} not found.";
+        _logger.LogError(msg);
+        
+        throw new KeyNotFoundException(msg);
     }
 
     public Task<BookModel> PutBookAsync(int id, Book body)

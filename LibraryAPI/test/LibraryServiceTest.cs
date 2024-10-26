@@ -1,6 +1,8 @@
 using System;
 using LibraryAPI.LibraryService;
 using LibraryAPI.LibraryService.Models;
+using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace LibraryAPI.test;
 
@@ -13,17 +15,19 @@ using Xunit;
 public class LibraryServiceTests : IDisposable
 {
     private readonly DevAppDbContext _context;
-    private readonly LibraryService.LibraryService _libraryService;
+    private readonly LibraryDbService _libraryService;
 
     public LibraryServiceTests()
     {
         // Setup the in-memory database
         var options = new DbContextOptionsBuilder<DevAppDbContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            // TODO mocking db context for results tricky so can add a seperate db layer later and mock that
+            .UseInMemoryDatabase(databaseName: "UnitTestDatabase")
             .Options;
 
+        var mockLogger = new Mock<ILogger<LibraryDbService>>();
         _context = new DevAppDbContext(options);
-        _libraryService = new LibraryService.LibraryService(_context);
+        _libraryService = new LibraryService.LibraryDbService(_context, mockLogger.Object);
     }
 
     [Fact]
@@ -77,10 +81,14 @@ public class LibraryServiceTests : IDisposable
     public async Task GetBookAsync_ReturnsNull_WhenBookDoesNotExist()
     {
         // Act: Call the method with a non-existing ID
-        var result = await _libraryService.GetBookAsync(999); // Non-existing ID
-
-        // Assert: Check that the result is null
-        Assert.Null(result);
+        try
+        {
+            var result = await _libraryService.GetBookAsync(999); // Non-existing ID
+            Assert.Fail();
+        }
+        catch (KeyNotFoundException e)
+        {
+        }
     }
 
     public void Dispose()
