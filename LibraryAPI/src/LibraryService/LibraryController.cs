@@ -63,11 +63,10 @@ namespace LibraryAPI.LibraryService
         /// </remarks>
         /// <returns>OK</returns>
         [HttpGet("books")]
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<BookWithId>> GetBooks()
+        public async Task<ActionResult<IEnumerable<BookWithId>>>  GetBooks()
         {
-
            var books = await _libraryService.GetBooksAsync();
-           return _mapper.Map<ICollection<BookWithId>>(books as ICollection<BookModel>);
+           return Ok(_mapper.Map<IEnumerable<BookWithId>>(books));
         }
 
         /// <summary>
@@ -78,10 +77,10 @@ namespace LibraryAPI.LibraryService
         /// </remarks>
         /// <returns>Created</returns>
         [HttpPost("book")]
-        public async System.Threading.Tasks.Task<BookWithId> PostBook([Microsoft.AspNetCore.Mvc.FromBody] Book book)
+        public async Task<ActionResult<BookWithId>>  PostBook([Microsoft.AspNetCore.Mvc.FromBody] Book book)
         {
 
-            return _mapper.Map<BookWithId>(await _libraryService.AddBookAsync(_mapper.Map<CreateBookModel>(book)));
+            return Ok(_mapper.Map<BookWithId>(await _libraryService.AddBookAsync(_mapper.Map<CreateBookModel>(book))));
         }
 
         /// <summary>
@@ -92,7 +91,7 @@ namespace LibraryAPI.LibraryService
         /// </remarks>
         /// <returns>OK</returns>
         [HttpGet("book/{id}")]
-        public async System.Threading.Tasks.Task<ActionResult<BookWithId>> GetBook(int id)
+        public async Task<ActionResult<BookWithId>> GetBook(int id)
         {
             try
             {
@@ -114,10 +113,17 @@ namespace LibraryAPI.LibraryService
         [HttpPut("book/{id}")]
         [ProducesResponseType(typeof(BookWithId), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async System.Threading.Tasks.Task<BookWithId> PutBook(int id, [Microsoft.AspNetCore.Mvc.FromBody] Book book)
+        public async Task<ActionResult<BookWithId>>  PutBook(int id, [Microsoft.AspNetCore.Mvc.FromBody] Book book)
         {
 
-            return _mapper.Map<BookWithId>(await _libraryService.UpdateBookAsync(id, _mapper.Map<CreateBookModel>(book)));
+            try
+            {
+                return Ok(_mapper.Map<BookWithId>(await _libraryService.UpdateBookAsync(id, _mapper.Map<CreateBookModel>(book))));
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound();
+            }
         }
 
     }

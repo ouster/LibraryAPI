@@ -51,6 +51,7 @@ public class LibraryService : ILibraryService
         return await _bookRepository.Add(book);
     }
 
+    
     public async Task<BookModel?> GetBookAsync(int id)
     {
         var book = await _bookRepository.GetById(id);
