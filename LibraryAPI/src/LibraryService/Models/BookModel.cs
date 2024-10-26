@@ -4,6 +4,8 @@ namespace LibraryAPI.LibraryService.Models;
 
 public class BookModel : CreateBookModel
 {
+    
+    public int Id { get; set; }
     public BookModel()
     {
     }
@@ -16,7 +18,5 @@ public class BookModel : CreateBookModel
         Isbn = isbn;
         PublishedDate = publishedDate;
     }
-
-    public int Id { get; set; }
 
 }

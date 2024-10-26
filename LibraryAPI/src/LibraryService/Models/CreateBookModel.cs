@@ -4,10 +4,8 @@ namespace LibraryAPI.LibraryService.Models;
 
 public class CreateBookModel : BaseEntity
 {
-
     public CreateBookModel()
     {
-        
     }
 
     public CreateBookModel(string title, string author, string isbn, DateTime publishedDate)

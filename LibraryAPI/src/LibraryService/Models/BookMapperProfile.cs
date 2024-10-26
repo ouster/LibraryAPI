@@ -9,14 +9,18 @@ public class BookMapperProfile : Profile
     {
         CreateMap<BookModel, BookWithId>()
             .ConstructUsing(src =>
-                new BookWithId(src.Id, src.Title, src.Author, src.Isbn, new DateTimeOffset(src.PublishedDate, TimeSpan.Zero)));
-        
+                new BookWithId(src.Id, src.Title, src.Author, src.Isbn,
+                    new DateTimeOffset(src.PublishedDate, TimeSpan.Zero)));
+
         CreateMap<CreateBookModel, Book>()
-            .ConstructUsing(src => new Book(src.Title, src.Author, src.Isbn, DateTimeOffset.Now));
-        
+            .ConstructUsing(src => new Book(src.Title, src.Author, src.Isbn, src.PublishedDate));
+
 
         CreateMap<Book, CreateBookModel>()
-            .ForMember(dest => dest.PublishedDate, opt => opt.MapFrom(src => src.PublishedDate.UtcDateTime));
+            .ConstructUsing(src => new CreateBookModel(src.Title, src.Author, src.Isbn, src.PublishedDate.UtcDateTime))
+            .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))
+            .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => DateTime.Now))
+            .ForMember(dest => dest.PublishedDate, opt => opt.Ignore());
 
         CreateMap<BookModel, Book>()
             .ConstructUsing(src => new Book(src.Title, src.Author, src.Isbn, src.PublishedDate));

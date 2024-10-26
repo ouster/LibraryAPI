@@ -81,7 +81,7 @@ namespace LibraryAPI.LibraryService
         public async System.Threading.Tasks.Task<BookWithId> PostBook([Microsoft.AspNetCore.Mvc.FromBody] Book book)
         {
 
-            return _mapper.Map<BookWithId>(await _libraryService.AddBookAsync(_mapper.Map<BookModel>(book)));
+            return _mapper.Map<BookWithId>(await _libraryService.AddBookAsync(_mapper.Map<CreateBookModel>(book)));
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace LibraryAPI.LibraryService
         public async System.Threading.Tasks.Task<BookWithId> PutBook(int id, [Microsoft.AspNetCore.Mvc.FromBody] Book book)
         {
 
-            return _mapper.Map<BookWithId>(await _libraryService.UpdateBookAsync(id, _mapper.Map<BookModel>(book)));
+            return _mapper.Map<BookWithId>(await _libraryService.UpdateBookAsync(id, _mapper.Map<CreateBookModel>(book)));
         }
 
     }
