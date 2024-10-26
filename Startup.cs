@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using LibraryAPI.LibraryService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,11 +14,13 @@ namespace LibraryAPI;
 
 public class Startup
 {
-    public IConfiguration Configuration { get; }
+    private readonly IConfiguration _configuration;
+    private readonly IWebHostEnvironment _environment;
 
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration configuration, IWebHostEnvironment environment)
     {
-        Configuration = configuration;
+        _configuration = configuration;
+        _environment = environment;
     }
 
     // Configure services
@@ -26,7 +29,7 @@ public class Startup
         // Configure database context based on environment
         string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         
-        if (environment == "IntegrationTesting" || environment == Environments.Development)
+        if (environment == Environments.Development)
         {
             // Use an in-memory database for integration tests
             services.AddDbContext<DevAppDbContext>(options =>
@@ -48,8 +51,7 @@ public class Startup
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
     }
-
-    // Configure HTTP request pipeline
+    
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
@@ -57,6 +59,15 @@ public class Startup
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Library API v1"));
             app.UseDeveloperExceptionPage();
+            
+            // Ensure database is created
+            using var scope = app.ApplicationServices.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<DevAppDbContext>();
+            context.Database.EnsureCreated();
+            
+            // Valid automapper?
+            var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
+            mapper.ConfigurationProvider.AssertConfigurationIsValid(); //
         }
         else
         {

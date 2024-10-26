@@ -34,7 +34,7 @@ public class LibraryServiceTests : IDisposable
         {
             new BookModel()
             {
-                Id = 1, Title = "Book One", Author = "Author One", Isbn = "1234567890", PublishedDate = DateTime.Now
+                Id = 1, Title = "Book One", Author = "Author One", Isbn = "1234567890123", PublishedDate = DateTime.Now
             },
             new BookModel()
             {

@@ -1,9 +1,7 @@
-using AutoMapper;
-using LibraryAPI.LibraryService;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
+using System.IO;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 
 namespace LibraryAPI;
@@ -13,27 +11,31 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = CreateBuilder(args);
+
+        var startup = new Startup(builder.Configuration, builder.Environment);
+        startup.ConfigureServices(builder.Services);
+        
         var app = builder.Build();
         
-        EnsureDbIsCreated(app);
+        startup.Configure(app, app.Environment);
 
-        var mapper = app.Services.GetRequiredService<IMapper>();
-        mapper.ConfigurationProvider.AssertConfigurationIsValid(); 
-        
         app.Run();
     }
 
-    private static void EnsureDbIsCreated(IHost app) //TODO review this as add real db
-    {
-        using var scope = app.Services.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<DevAppDbContext>();
-        context.Database.EnsureCreated();
-    }
 
-    private static IHostBuilder CreateBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            });
+    private static WebApplicationBuilder CreateBuilder(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Logging.AddConsole();
+
+        builder.Configuration
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+            .AddEnvironmentVariables();
+
+
+        return builder;
+    }
 }
