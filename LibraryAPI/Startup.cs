@@ -1,6 +1,7 @@
 using System;
 using AutoMapper;
 using LibraryAPI.LibraryService;
+using LibraryAPI.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -43,7 +44,7 @@ public class Startup
         }
 
         // Register other services
-        services.AddScoped<ILibraryService, LibraryService.LibraryService>();
+        services.AddScoped<ILibraryService, LibraryService.LibraryDbService>();
 
         // Add AutoMapper, controllers, and Swagger
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -74,6 +75,8 @@ public class Startup
             app.UseExceptionHandler("/Home/Error");
             app.UseHsts();
         }
+        
+        app.UseMiddleware<GlobalExceptionHandler>();
         
         app.UseHttpsRedirection();
         app.UseRouting();

@@ -1,3 +1,4 @@
+using System.Data.Common;
 using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -20,8 +21,14 @@ public class GlobalExceptionHandler(RequestDelegate next, ILogger<GlobalExceptio
         catch (AutoMapperMappingException ex)
         {
             // Log the exception message and the errors
-            Console.WriteLine($"Mapping Failed: {ex.Message}"); // Log the message
+            logger.LogError($"Mapping Failed: {ex.Message}"); // Log the message
             await HandleExceptionAsync(context, ex);
+        }
+        catch (DbException dbEx)
+        {
+            // Log the database-related exception
+            logger.LogError($"Database error occurred: {dbEx.Message}");
+            throw; // or handle as needed
         }
         catch (Exception ex)
         {

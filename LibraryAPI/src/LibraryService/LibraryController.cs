@@ -28,62 +28,6 @@ namespace LibraryAPI.LibraryService
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public interface ILibraryService
-    {
-
-        /// <summary>
-        /// Get all books
-        /// </summary>
-
-        /// <remarks>
-        /// Retrieve a list of all books in the library.
-        /// </remarks>
-
-        /// <returns>OK</returns>
-
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<BookModel>> GetBooksAsync();
-
-        /// <summary>
-        /// Add a new book
-        /// </summary>
-
-        /// <remarks>
-        /// Add a new book to the library.
-        /// </remarks>
-
-        /// <returns>Created</returns>
-
-        System.Threading.Tasks.Task<BookModel> PostBookAsync(Book body);
-
-        /// <summary>
-        /// Get a specific book
-        /// </summary>
-
-        /// <remarks>
-        /// Retrieve a specific book by its ID.
-        /// </remarks>
-
-        /// <returns>OK</returns>
-
-        Task<BookModel?> GetBookAsync(int id);
-
-        /// <summary>
-        /// Update a book
-        /// </summary>
-
-        /// <remarks>
-        /// Update an existing book by its ID.
-        /// </remarks>
-
-
-
-        /// <returns>OK</returns>
-
-        System.Threading.Tasks.Task<BookModel> PutBookAsync(int id, Book body);
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
 
     public partial class LibraryController : Microsoft.AspNetCore.Mvc.ControllerBase
     {
@@ -176,6 +120,18 @@ namespace LibraryAPI.LibraryService
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class BookWithId
     {
+        BookWithId()
+        {
+            
+        }
+
+        public BookWithId(int Id, string title, string author, string isbn, System.DateTimeOffset publishedDate)
+        {
+            Title = title;
+            Author = author;
+            Isbn = isbn;
+            PublishedDate = publishedDate;
+        }
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int Id { get; set; }
 
