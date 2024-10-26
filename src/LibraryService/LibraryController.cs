@@ -4,6 +4,8 @@
 // </auto-generated>
 //----------------------
 
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using LibraryAPI.LibraryService.Models;
 

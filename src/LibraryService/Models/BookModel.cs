@@ -1,3 +1,5 @@
+using System;
+
 namespace LibraryAPI.LibraryService.Models;
 
 public class BookModel
