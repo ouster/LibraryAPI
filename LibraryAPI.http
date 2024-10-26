@@ -1,6 +1,0 @@
-@LibraryAPI_HostAddress = http://localhost:5125
-
-GET {{LibraryAPI_HostAddress}}/swagger/
-Accept: application/json
-
-###

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAPI", "LibraryAPI.csproj", "{FD80BA6B-904A-40D8-93D7-286BEFFC88D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAPI", "LibraryAPI\LibraryAPI.csproj", "{FD80BA6B-904A-40D8-93D7-286BEFFC88D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAPIIntegrationTests", "LibraryAPIIntegrationTests\LibraryAPIIntegrationTests.csproj", "{35D4CF9E-2897-42AB-9544-4752B9D69CE6}"
 EndProject
