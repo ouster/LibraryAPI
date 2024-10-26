@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using LibraryAPI.LibraryService.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 
 #pragma warning disable 108 // Disable "CS0108 '{derivedDto}.ToJson()' hides inherited member '{dtoBase}.ToJson()'. Use the new keyword if hiding was intended."
 #pragma warning disable 114 // Disable "CS0114 '{derivedDto}.RaisePropertyChanged(String)' hides inherited member 'dtoBase.RaisePropertyChanged(String)'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword."
@@ -29,7 +32,19 @@ namespace LibraryAPI.LibraryService
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
 
-    public partial class LibraryController : Microsoft.AspNetCore.Mvc.ControllerBase
+    [ApiController]
+    [Route("api/v0.1/library")]
+    public abstract class LibraryBaseController : ControllerBase
+    {
+        // Base route for the controllers with a version parameter
+        public class BaseApiController : LibraryBaseController
+        {
+            // You can include common functionality or properties here if needed
+        }
+    }
+    
+    [ApiVersion("0.1")]
+    public partial class LibraryController : LibraryBaseController
     {
         private ILibraryService _libraryService;
         private readonly IMapper _mapper;
@@ -47,7 +62,7 @@ namespace LibraryAPI.LibraryService
         /// Retrieve a list of all books in the library.
         /// </remarks>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/books")]
+        [HttpGet("books")]
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<BookWithId>> GetBooks()
         {
 
@@ -62,7 +77,7 @@ namespace LibraryAPI.LibraryService
         /// Add a new book to the library.
         /// </remarks>
         /// <returns>Created</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/book")]
+        [HttpPost("book")]
         public async System.Threading.Tasks.Task<BookWithId> PostBook([Microsoft.AspNetCore.Mvc.FromBody] Book body)
         {
 
@@ -76,11 +91,17 @@ namespace LibraryAPI.LibraryService
         /// Retrieve a specific book by its ID.
         /// </remarks>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/book/{id}")]
-        public async System.Threading.Tasks.Task<BookWithId> GetBook(int id)
+        [HttpGet("book/{id}")]
+        public async System.Threading.Tasks.Task<ActionResult<BookWithId>> GetBook(int id)
         {
-
-            return _mapper.Map<BookWithId>(await _libraryService.GetBookAsync(id));
+            try
+            {
+                return Ok(_mapper.Map<BookWithId>(await _libraryService.GetBookAsync(id)));
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound();
+            }
         }
 
         /// <summary>
@@ -90,7 +111,9 @@ namespace LibraryAPI.LibraryService
         /// Update an existing book by its ID.
         /// </remarks>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("api/book/{id}")]
+        [HttpPut("book/{id}")]
+        [ProducesResponseType(typeof(BookWithId), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async System.Threading.Tasks.Task<BookWithId> PutBook(int id, [Microsoft.AspNetCore.Mvc.FromBody] Book body)
         {
 
@@ -125,8 +148,9 @@ namespace LibraryAPI.LibraryService
             
         }
 
-        public BookWithId(int Id, string title, string author, string isbn, System.DateTimeOffset publishedDate)
+        public BookWithId(int id, string title, string author, string isbn, System.DateTimeOffset publishedDate)
         {
+            Id = id;
             Title = title;
             Author = author;
             Isbn = isbn;

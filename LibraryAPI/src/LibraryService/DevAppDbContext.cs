@@ -6,7 +6,7 @@ namespace LibraryAPI.LibraryService;
 
 public class DevAppDbContext(DbContextOptions options) : DbContext(options)
 {
-    // Define your DbSets (tables) here
+    // Move to integration test context later
     public DbSet<BookModel> Books { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

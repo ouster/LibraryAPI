@@ -5,8 +5,10 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
+using LibraryAPI;
 using LibraryAPI.LibraryService;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,35 +17,13 @@ using Program = LibraryAPI.Program;
 
 namespace LibraryAPIIntegrationTests;
 
-public class LibraryControllerTests : IClassFixture<WebApplicationFactory<Program>>
+public class LibraryControllerTests(WebApplicationFactory<Program> factory) : ApiTestFixture(factory)
 {
-    private readonly WebApplicationFactory<Program> _factory;
-    private readonly HttpClient _client;
-
-    public LibraryControllerTests(WebApplicationFactory<Program> factory)
-    {
-        _factory = factory.WithWebHostBuilder(builder =>
-        {
-            builder.UseEnvironment("Development"); // TODO review this later
-            builder.ConfigureServices(services =>
-            {
-                // Replace the DB context with an in-memory database
-                var descriptor = services.SingleOrDefault(d =>
-                    d.ServiceType == typeof(DbContextOptions<DevAppDbContext>));
-                if (descriptor != null)
-                    services.Remove(descriptor);
-                
-                services.AddDbContext<DevAppDbContext>(options =>
-                    options.UseInMemoryDatabase("IntegrationTestDb"));
-            });
-        });
-        _client = _factory.CreateClient();
-    }
     [Fact]
     public async Task GetBooks_ReturnsOk_WhenBooksExist()
     {
         // Act
-        var response = await _client.GetAsync("/api/books");
+        var response = await Client.GetAsync($"{BaseUrl}/books");
 
         // Assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
@@ -66,7 +46,7 @@ public class LibraryControllerTests : IClassFixture<WebApplicationFactory<Progra
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/api/book", newBook);
+        var response = await Client.PostAsJsonAsync($"{BaseUrl}/book", newBook);
 
         // Assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
@@ -84,7 +64,7 @@ public class LibraryControllerTests : IClassFixture<WebApplicationFactory<Progra
         int bookId = 1;
 
         // Act
-        var response = await _client.GetAsync($"/api/book/{bookId}");
+        var response = await Client.GetAsync($"{BaseUrl}/book/{bookId}");
 
         // Assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
@@ -98,7 +78,7 @@ public class LibraryControllerTests : IClassFixture<WebApplicationFactory<Progra
     public async Task GetBook_ReturnsNotFound_WhenBookDoesNotExist()
     {
         // Act
-        var response = await _client.GetAsync("/api/book/999"); // Assuming ID 999 does not exist
+        var response = await Client.GetAsync($"{BaseUrl}/book/999"); // Assuming ID 999 does not exist
 
         // Assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
@@ -118,7 +98,7 @@ public class LibraryControllerTests : IClassFixture<WebApplicationFactory<Progra
         };
 
         // Act
-        var response = await _client.PutAsJsonAsync($"/api/book/{bookId}", updatedBook);
+        var response = await Client.PutAsJsonAsync($"{BaseUrl}/book/{bookId}", updatedBook);
 
         // Assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);

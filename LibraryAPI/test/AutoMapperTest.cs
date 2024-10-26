@@ -29,8 +29,8 @@ public class AutoMapperTest
     {
         var now = DateTime.Now;
         
-        BookModel bookModel = new BookModel(1, "Title", "Author", "Isbn", now);
-        BookWithId expectedBookWithId = new BookWithId(bookModel.Id, bookModel.Title, bookModel.Author, bookModel.Isbn, bookModel.PublishedDate);
+        var bookModel = new BookModel(1, "Title", "Author", "Isbn", now);
+        var expectedBookWithId = new BookWithId(bookModel.Id, bookModel.Title, bookModel.Author, bookModel.Isbn, bookModel.PublishedDate);
         var actualBookWithId = mapper.Map<BookWithId>(bookModel);
         
         Assert.Equivalent(expectedBookWithId, actualBookWithId);
