@@ -28,3 +28,12 @@ nswag openapi2csclient /input:https://libapi.1breadcrumb.com/v1/swagger.json /na
 ```
 
 # TODO script from CI/CD
+github actions?
+
+# TODO openapi.json generation
+separate project probably, has a  quick look but did not work
+can then generate client stubs on demand
+
+# TODO revisit repository pattern 
+
+# TODO add paging
