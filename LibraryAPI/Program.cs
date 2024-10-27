@@ -1,6 +1,8 @@
 using System.IO;
+using LibraryAPI.LibraryService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 
@@ -18,7 +20,7 @@ public class Program
         var app = builder.Build();
         
         startup.Configure(app, app.Environment);
-
+        
         app.Run();
     }
 

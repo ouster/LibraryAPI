@@ -42,7 +42,7 @@ public abstract class ApiTestFixture : IClassFixture<WebApplicationFactory<Progr
         });
         Client = factoryWithInMemoryDb.CreateClient();
         
-        _context.SeedData();
+        _context.ClearDB();
     }
 
     // protected ApiTestFixture(WebApplicationFactory<Program> factory)

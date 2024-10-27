@@ -78,7 +78,7 @@ namespace LibraryAPI.LibraryService
         /// </remarks>
         /// <returns>Created</returns>
         [HttpPost("book")]
-        public async Task<ActionResult<BookWithId>>  PostBook([Microsoft.AspNetCore.Mvc.FromBody] Book book)
+        public async Task<ActionResult<BookWithId>> PostBook([Microsoft.AspNetCore.Mvc.FromBody] Book book)
         {
 
             return Ok(_mapper.Map<BookWithId>(await _libraryService.AddBookAsync(_mapper.Map<CreateBookDto>(book))));

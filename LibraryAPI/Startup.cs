@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AutoMapper;
 using LibraryAPI.LibraryService;
 using LibraryAPI.LibraryService.Models;
@@ -11,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 // Your service and model namespaces
 
@@ -38,7 +38,7 @@ public class Startup
 
         // Register other services
         services.AddScoped<BookRepository>();
-        services.AddScoped<LibraryService.LibraryService>();
+        services.AddScoped<ILibraryService, LibraryService.LibraryService>();
 
         // Add AutoMapper, controllers, and Swagger
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -94,12 +94,16 @@ public class Startup
             
             using var scope = app.ApplicationServices.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<DevAppDbContext>();
+            context.Database.EnsureCreated();
             
-            context.SeedData();
+            // context.ClearDB();
             
             // Valid automapper?
             var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
-            mapper.ConfigurationProvider.AssertConfigurationIsValid(); 
+            mapper.ConfigurationProvider.AssertConfigurationIsValid();
+            
+            var bookRepository = scope.ServiceProvider.GetRequiredService<BookRepository>();
+            bookRepository.SeedBooksAsync();
         }
         else
         {
@@ -115,4 +119,7 @@ public class Startup
         app.UseEndpoints(endpoints => endpoints.MapControllers());
 
     }
+    
+    
+
 }

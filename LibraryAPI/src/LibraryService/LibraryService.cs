@@ -23,7 +23,6 @@ public interface ILibraryService
 
 public class LibraryService : ILibraryService
 {
-    //    private readonly DevAppDbContext _context;
     private readonly IBookRepository _bookRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<LibraryService> _logger;
