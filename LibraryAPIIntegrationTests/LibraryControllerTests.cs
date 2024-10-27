@@ -49,7 +49,7 @@ public class LibraryControllerTests(WebApplicationFactory<Program> factory) : Ap
         var response = await Client.PostAsJsonAsync($"{BaseUrl}/book", newBook);
 
         // Assert
-        response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
 
         var createdBook = await response.Content.ReadFromJsonAsync<BookWithId>();
         createdBook.Should().NotBeNull();

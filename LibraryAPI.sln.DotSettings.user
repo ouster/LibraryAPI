@@ -71,7 +71,7 @@
     &lt;TestId&gt;xUnit::FD80BA6B-904A-40D8-93D7-286BEFFC88D9::net8.0::LibraryAPI.test.LibraryServiceTests.GetBookAsync_ThrowsKeyNotFound_WhenBookDoesNotExist&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=637e6ed6_002Dbe6c_002D4237_002D8cd0_002D16c3f91101fa/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="AddAsync_CreatesBook" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=637e6ed6_002Dbe6c_002D4237_002D8cd0_002D16c3f91101fa/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddAsync_CreatesBook" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Or&gt;
     &lt;And&gt;
       &lt;Or&gt;
@@ -106,7 +106,7 @@
     &lt;ProjectFile&gt;FD80BA6B-904A-40D8-93D7-286BEFFC88D9/d:test/f:LibraryServiceTest.cs&lt;/ProjectFile&gt;
   &lt;/Or&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e513dab8_002Dcf1c_002D4ace_002D913e_002De1440d3a624f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddAsync_CreatesBook #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e513dab8_002Dcf1c_002D4ace_002D913e_002De1440d3a624f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="AddAsync_CreatesBook #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Or&gt;
     &lt;ProjectFile&gt;FD80BA6B-904A-40D8-93D7-286BEFFC88D9/d:test/f:LibraryServiceTest.cs&lt;/ProjectFile&gt;
     &lt;ProjectFile&gt;35D4CF9E-2897-42AB-9544-4752B9D69CE6/f:LibraryControllerTests.cs&lt;/ProjectFile&gt;
