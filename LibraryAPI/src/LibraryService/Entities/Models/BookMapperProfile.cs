@@ -15,6 +15,12 @@ public class BookMapperProfile : Profile
         CreateMap<CreateBookDto, Book>()
             .ConstructUsing(src => new Book(src.Title, src.Author, src.Isbn, src.PublishedDate));
 
+        CreateMap<CreateBookDto, BookModel>()
+            .ConstructUsing(src => new BookModel(src.Title, src.Author, src.Isbn, src.PublishedDate))
+            .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+            .ForMember(dest => dest.ModifiedDate, opt => opt.Ignore())
+            .ForMember(dest => dest.KeyId, opt => opt.Ignore())
+            .ForMember(dest => dest.Id, opt => opt.Ignore());;
 
         CreateMap<Book, CreateBookDto>()
             .ConstructUsing(src => new CreateBookDto(src.Title, src.Author, src.Isbn, src.PublishedDate.UtcDateTime))

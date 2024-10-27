@@ -45,19 +45,31 @@ public class LibraryServiceTests : BaseServiceFixture
     public async Task AddAsync_CreatesBook()
     {
         // Arrange
-        var bookDto = new CreateBookDto(
-             srcTitle : "New Book", srcAuthor : "New Author", srcIsbn : "9876543210123", publishedDateUtcDateTime : DateTime.Now );
-        var bookModel = Mapper.Map<BookModel>(bookDto);
+        var createBookDto = new CreateBookDto(
+            srcTitle: "New Book", srcAuthor: "New Author", srcIsbn: "9876543210123",
+            publishedDateUtcDateTime: DateTime.Now);
 
-        MockRepo.Setup(repo => repo.Add(bookModel)).ReturnsAsync(bookModel); // Simulate adding the book
+        var expectedBookModel = new BookModel(
+            id: 1,
+            title: createBookDto.Title,
+            author: createBookDto.Author,
+            isbn: createBookDto.Isbn,
+            publishedDate: createBookDto.PublishedDate
+        );
+
+
+        MockRepo.Setup(repo => repo.Add(It.IsAny<BookModel>()))
+            .ReturnsAsync(expectedBookModel); // Simulate adding the book
 
         // Act
-        var result = await _libraryService.AddBookAsync(bookDto);
+        var result = await _libraryService.AddBookAsync(createBookDto);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal("New Book", result.Title);
-        MockRepo.Verify(repo => repo.Add(bookModel), Times.Once); // Verify the AddAsync method was called once
+        Assert.Equal(expectedBookModel.Title, result.Title);
+        Assert.Equal(expectedBookModel.Author, result.Author);
+        Assert.Equal(expectedBookModel.Isbn, result.Isbn);
+        MockRepo.Verify(repo => repo.Add(It.IsAny<BookModel>()), Times.Once);
     }
 
     [Fact]
@@ -83,7 +95,7 @@ public class LibraryServiceTests : BaseServiceFixture
     }
 }
 
-public class BaseServiceFixture : IDisposable
+public class BaseServiceFixture
 {
     protected readonly IMapper Mapper;
     protected Mock<IAsyncRepository<BookModel>> MockRepo = new();
@@ -92,9 +104,5 @@ public class BaseServiceFixture : IDisposable
     protected BaseServiceFixture()
     {
         Mapper = AutoMapperFixture.MapperFactory();
-    }
-
-    public void Dispose()
-    {
     }
 }

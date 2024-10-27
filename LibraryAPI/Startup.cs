@@ -70,7 +70,8 @@ public class Startup
         {
             // Use an in-memory database for integration tests
             services.AddDbContext<DevAppDbContext>(options =>
-                options.UseInMemoryDatabase("LibraryDb"));
+                options.UseInMemoryDatabase("LibraryDb:"+Guid.NewGuid().ToString())
+                    .EnableSensitiveDataLogging());
         }
         else
         {

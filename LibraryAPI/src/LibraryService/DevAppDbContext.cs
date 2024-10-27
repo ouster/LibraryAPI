@@ -16,6 +16,10 @@ public class DevAppDbContext(DbContextOptions options) : DbContext(options)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.Entity<BookModel>()
+            .Property(b => b.Id)
+            .ValueGeneratedOnAdd();
 
         modelBuilder.Entity<BookModel>()
             .Property(b => b.Title)
@@ -27,8 +31,11 @@ public class DevAppDbContext(DbContextOptions options) : DbContext(options)
 
         modelBuilder.Entity<BookModel>()
             .Property(b => b.Isbn)
-            .HasMaxLength(IsbnMaxLength);
 
+    }
+
+    public static void CreateSeedData(ModelBuilder modelBuilder)
+    {
         // Seed initial test data
         modelBuilder.Entity<BookModel>().HasData(
             new BookModel(id: 1, title: "1984", author: "George Orwell", isbn: "9781234567897",
