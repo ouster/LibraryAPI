@@ -8,11 +8,18 @@ using Microsoft.Extensions.Logging;
 
 namespace LibraryAPI.LibraryService;
 
-public class BookRepository(DevAppDbContext context, ILogger<BookRepository> logger) : IBookRepository
+public class BookRepository : IBookRepository
 {
-    private readonly DevAppDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
-    private ILogger<BookRepository> _logger = logger ?? throw new ArgumentNullException(nameof(context));
+    private readonly DevAppDbContext _context;
+    private ILogger<BookRepository> _logger;
 
+
+    public BookRepository(DevAppDbContext context, ILogger<BookRepository> logger) 
+    {
+        _logger = logger ?? throw new ArgumentNullException(nameof(context));
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+    }
+    
     public async ValueTask<BookModel?> GetById(int id)
     {
         return await _context.Books.FindAsync(id);

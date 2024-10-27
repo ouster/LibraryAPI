@@ -73,6 +73,8 @@ public class Startup
             services.AddDbContext<DevAppDbContext>(options =>
                 options.UseInMemoryDatabase("LibraryDb:"+Guid.NewGuid().ToString())
                     .EnableSensitiveDataLogging());
+            services.AddScoped<DevAppDbContext>();
+            services.AddScoped<IBookRepository, BookRepository>();
         }
         else
         {
