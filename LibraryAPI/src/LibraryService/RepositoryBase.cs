@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace LibraryAPI.LibraryService;
 
-public class RepositoryBase<T> : IRepositoryBase<T> where T : class
+public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
     protected RepositoryContext? RepositoryContext { get; set; } 
     public RepositoryBase(RepositoryContext? repositoryContext) 

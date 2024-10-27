@@ -37,10 +37,8 @@ public class Startup
         SetupDbContext(services);
 
         // Register other services
-        services.AddScoped<RepositoryContext>();
-        services.AddScoped<IRepositoryBase<BookModel>, RepositoryBase<BookModel>>();
-        services.AddScoped<IBookRepository, BookRepository>();
-        services.AddScoped<ILibraryService, LibraryService.LibraryService>();
+        services.AddScoped<BookRepository>();
+        services.AddScoped<LibraryService.LibraryService>();
 
         // Add AutoMapper, controllers, and Swagger
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -15,7 +15,6 @@ public class BookRepository : RepositoryBase<BookModel>, IBookRepository
 
     public BookRepository(DevAppDbContext context) : base(context)
     {
-        
     }
     public BookRepository(DevAppDbContext context, ILogger<BookRepository> logger) : base(context) 
     {
