@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
 using AutoMapper;
 using LibraryAPI.LibraryService;
-using LibraryAPI.LibraryService.Models;
 using LibraryAPI.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,23 +11,37 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-// Your service and model namespaces
+using Microsoft.Extensions.Logging;
 
 namespace LibraryAPI;
 
-public class Startup
+public class StartupHelper
 {
     private readonly IConfiguration _configuration;
     private readonly IWebHostEnvironment _environment;
 
-    public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+    public StartupHelper(IConfiguration configuration, IWebHostEnvironment environment)
     {
         _configuration = configuration;
         _environment = environment;
     }
 
-    // Configure services
+    public static WebApplicationBuilder CreateBuilder(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Logging.AddConsole();
+
+        builder.Configuration
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+            .AddEnvironmentVariables();
+
+
+        return builder;
+    }
+
     public void ConfigureServices(IServiceCollection services)
     {
         
@@ -37,7 +50,12 @@ public class Startup
         SetupDbContext(services);
 
         // Register other services
+        // services.AddScoped((serviceProvider) => serviceProvider
+        //     .GetRequiredService<IDbContextFactory<DevAppDbContext>>()
+        //     .CreateDbContext());
+        
         services.AddScoped<BookRepository>();
+        
         services.AddScoped<ILibraryService, LibraryService.LibraryService>();
 
         // Add AutoMapper, controllers, and Swagger
@@ -71,10 +89,8 @@ public class Startup
         {
             // Use an in-memory database for integration tests
             services.AddDbContext<DevAppDbContext>(options =>
-                options.UseInMemoryDatabase("LibraryDb:"+Guid.NewGuid().ToString())
+                options.UseInMemoryDatabase("LibraryDb")
                     .EnableSensitiveDataLogging());
-            services.AddScoped<DevAppDbContext>();
-            services.AddScoped<IBookRepository, BookRepository>();
         }
         else
         {
@@ -95,8 +111,8 @@ public class Startup
             app.UseDeveloperExceptionPage();
             
             using var scope = app.ApplicationServices.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<DevAppDbContext>();
-            context.Database.EnsureCreated();
+            // var context = scope.ServiceProvider.GetRequiredService<DevAppDbContext>();
+            // context.Database.EnsureCreated();
             
             // context.ClearDB();
             
@@ -121,7 +137,4 @@ public class Startup
         app.UseEndpoints(endpoints => endpoints.MapControllers());
 
     }
-    
-    
-
 }

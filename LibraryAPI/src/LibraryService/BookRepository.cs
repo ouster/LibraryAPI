@@ -10,35 +10,39 @@ namespace LibraryAPI.LibraryService;
 
 public class BookRepository : IBookRepository
 {
-    private readonly DevAppDbContext _context;
+    private DevAppDbContext _context;
     private ILogger<BookRepository> _logger;
 
 
+    public BookRepository()
+    {
+        
+    }
     public BookRepository(DevAppDbContext context, ILogger<BookRepository> logger) 
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(context));
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
     
-    public async ValueTask<BookModel?> GetById(int id)
+    public virtual async ValueTask<BookModel?> GetById(int id)
     {
         return await _context.Books.FindAsync(id);
     }
 
-    public async Task<BookModel> Add(BookModel entity)
+    public virtual async Task<BookModel> Add(BookModel entity)
     {
         var addedEntity = await _context.Books.AddAsync(entity);
         await _context.SaveChangesAsync();
         return addedEntity.Entity; // Return the added entity
     }
 
-    public void Update(BookModel entity)
+    public virtual void Update(BookModel entity)
     {
         _context.Books.Update(entity);
         _context.SaveChanges(); // Save changes synchronously
     }
 
-    public async Task<IEnumerable<BookModel>> GetAll()
+    public virtual async Task<IEnumerable<BookModel>> GetAll()
     {
         return await _context.Books
             .OrderBy(b => b.Title)

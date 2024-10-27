@@ -14,7 +14,7 @@ public abstract class AutoMapperFixture : IDisposable
     {
         // Set up a service provider with AutoMapper for testing
         var serviceCollection = new ServiceCollection();
-        serviceCollection.AddAutoMapper(typeof(Startup)); // Register AutoMapper with all profiles from Startup
+        serviceCollection.AddAutoMapper(typeof(Program)); // Register AutoMapper with all profiles from Startup
 
         var serviceProvider = serviceCollection.BuildServiceProvider();
         var mapper = serviceProvider.GetRequiredService<IMapper>();
