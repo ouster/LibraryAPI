@@ -13,6 +13,10 @@ public class BookRepository : RepositoryBase<BookModel>, IBookRepository
     private readonly DbContext Context;
     private ILogger<BookRepository> _logger;
 
+    public BookRepository(DevAppDbContext context) : base(context)
+    {
+        
+    }
     public BookRepository(DevAppDbContext context, ILogger<BookRepository> logger) : base(context) 
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(context));

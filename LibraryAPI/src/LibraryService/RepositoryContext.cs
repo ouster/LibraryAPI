@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryAPI.LibraryService;
 
-public abstract class RepositoryContext : DbContext
+public class RepositoryContext : DbContext
 {
-    protected RepositoryContext(DbContextOptions options) 
+    public RepositoryContext(DbContextOptions options) 
         : base(options) 
     { 
     }
