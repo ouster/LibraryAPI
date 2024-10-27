@@ -7,6 +7,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using LibraryAPI.LibraryService.Entities.Dtos;
 using LibraryAPI.LibraryService.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -80,7 +81,7 @@ namespace LibraryAPI.LibraryService
         public async Task<ActionResult<BookWithId>>  PostBook([Microsoft.AspNetCore.Mvc.FromBody] Book book)
         {
 
-            return Ok(_mapper.Map<BookWithId>(await _libraryService.AddBookAsync(_mapper.Map<CreateBookModel>(book))));
+            return Ok(_mapper.Map<BookWithId>(await _libraryService.AddBookAsync(_mapper.Map<CreateBookDto>(book))));
         }
 
         /// <summary>
@@ -97,7 +98,7 @@ namespace LibraryAPI.LibraryService
             {
                 return Ok(_mapper.Map<BookWithId>(await _libraryService.GetBookAsync(id)));
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
@@ -118,9 +119,9 @@ namespace LibraryAPI.LibraryService
 
             try
             {
-                return Ok(_mapper.Map<BookWithId>(await _libraryService.UpdateBookAsync(id, _mapper.Map<CreateBookModel>(book))));
+                return Ok(_mapper.Map<BookWithId>(await _libraryService.UpdateBookAsync(id, _mapper.Map<UpdateBookDto>(book))));
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }

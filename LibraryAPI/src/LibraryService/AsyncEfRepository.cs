@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using LibraryAPI.LibraryService.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryAPI.LibraryService;
@@ -19,7 +20,7 @@ public class AsyncEfRepository<T> : IAsyncRepository<T>
 
     public ValueTask<T?> GetById(int id) => _context.Set<T>().FindAsync(id);
 
-    public Task<T> FirstOrDefault(Expression<Func<T, bool>> predicate)
+    public Task<T?> FirstOrDefault(Expression<Func<T, bool>> predicate)
         => _context.Set<T>().FirstOrDefaultAsync(predicate);
 
     public async Task<T> Add(T entity)

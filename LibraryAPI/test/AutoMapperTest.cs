@@ -1,29 +1,16 @@
 using System;
 using AutoMapper;
 using LibraryAPI.LibraryService;
+using LibraryAPI.LibraryService.Entities.Dtos;
 using LibraryAPI.LibraryService.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace LibraryAPI.test;
 
-public class AutoMapperTest : IDisposable
+public abstract class AutoMapperFixture : IDisposable
 {
-    private readonly IMapper _mapper;
-
-    public AutoMapperTest()
-    {
-        _mapper = SetupMapper();
-    }
-
-    [Fact]
-    public void ValidateAutoMapperConfiguration()
-    {
-        // Act & Assert
-        _mapper.ConfigurationProvider.AssertConfigurationIsValid();
-    }
-
-    private IMapper SetupMapper()
+    public static IMapper MapperFactory()
     {
         // Set up a service provider with AutoMapper for testing
         var serviceCollection = new ServiceCollection();
@@ -32,6 +19,27 @@ public class AutoMapperTest : IDisposable
         var serviceProvider = serviceCollection.BuildServiceProvider();
         var mapper = serviceProvider.GetRequiredService<IMapper>();
         return mapper;
+    }
+
+    public void Dispose()
+    {
+    }
+}
+
+public class AutoMapperTest 
+{
+    private readonly IMapper _mapper;
+
+    public AutoMapperTest()
+    {
+        _mapper = AutoMapperFixture.MapperFactory();
+    }
+
+    [Fact]
+    public void ValidateAutoMapperConfiguration()
+    {
+        // Act & Assert
+        _mapper.ConfigurationProvider.AssertConfigurationIsValid();
     }
 
     [Fact]
@@ -57,16 +65,11 @@ public class AutoMapperTest : IDisposable
         
         var book = new Book("Title", "Author", "Isbn", now);
         var expectedBookModel = new Book(book.Title, book.Author, book.Isbn, book.PublishedDate);
-        var actualBookModel = _mapper.Map<CreateBookModel>(book);
+        var actualBookModel = _mapper.Map<CreateBookDto>(book);
         
         Assert.Equal(expectedBookModel.Title, actualBookModel.Title);
         Assert.Equal(expectedBookModel.Author, actualBookModel.Author);
         Assert.Equal(expectedBookModel.Isbn, actualBookModel.Isbn);
         Assert.Equal(expectedBookModel.PublishedDate, actualBookModel.PublishedDate);
-    }
-
-    public void Dispose()
-    {
-        
     }
 }

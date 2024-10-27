@@ -9,44 +9,36 @@ public class DevAppDbContext(DbContextOptions options) : DbContext(options)
     // Move to integration test context later
     public DbSet<BookModel> Books { get; set; }
 
+    public const int TitleMaxLength = 100;
+    public const int AuthorMaxLength = 50;
+    public const int IsbnMaxLength = 20; // future expansion, may change in the future (was 10 until 2007)
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<BookModel>()
             .Property(b => b.Title)
-            .HasMaxLength(100);
+            .HasMaxLength(TitleMaxLength);
 
         modelBuilder.Entity<BookModel>()
             .Property(b => b.Author)
-            .HasMaxLength(50);
+            .HasMaxLength(AuthorMaxLength);
 
         modelBuilder.Entity<BookModel>()
             .Property(b => b.Isbn)
-            .HasMaxLength(13); // may change in the future (was 10 until 2007)
+            .HasMaxLength(IsbnMaxLength);
 
         // Seed initial test data
         modelBuilder.Entity<BookModel>().HasData(
-            new BookModel
-            {
-                Id = 1, Title = "1984", Author = "George Orwell", Isbn = "9781234567897",
-                PublishedDate = new DateTime(1949, 6, 8),
-            },
-            new BookModel
-            {
-                Id = 2, Title = "To Kill a Mockingbird", Author = "Harper Lee", Isbn = "9783127323207",
-                PublishedDate = new DateTime(1960, 7, 11),
-            },
-            new BookModel
-            {
-                Id = 3, Title = "The Great Gatsby", Author = "F. Scott Fitzgerald", Isbn = "4855186747734",
-                PublishedDate = new DateTime(1925, 4, 10)
-            },
-            new BookModel
-            {
-                Id = 4, Title = "Brave New World", Author = "Aldous Huxley", Isbn = "4501169518",
-                PublishedDate = new DateTime(1932, 1, 1)
-            }
+            new BookModel(id: 1, title: "1984", author: "George Orwell", isbn: "9781234567897",
+                publishedDate: new DateTime(1949, 6, 8)),
+            new BookModel(id: 2, title: "To Kill a Mockingbird", author: "Harper Lee", isbn: "9783127323207",
+                publishedDate: new DateTime(1960, 7, 11)),
+            new BookModel(id: 2, title: "The Great Gatsby", author:  "F. Scott Fitzgerald", isbn: "4855186747734",
+                publishedDate: new DateTime(1925, 4, 10)),
+            new BookModel(id: 2, title: "Brave New World", author: "Aldous Huxley", isbn: "4501169518",
+                publishedDate: new DateTime(1932, 1, 1))
         );
     }
 }

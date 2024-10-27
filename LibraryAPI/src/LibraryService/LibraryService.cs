@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using LibraryAPI.LibraryService.Entities.Dtos;
 using LibraryAPI.LibraryService.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -14,23 +16,25 @@ public interface ILibraryService
 {
     Task<IEnumerable<BookModel>> GetBooksAsync();
 
-    Task<BookModel?> AddBookAsync(CreateBookModel body);
+    Task<BookModel?> AddBookAsync(CreateBookDto body);
 
     Task<BookModel?> GetBookAsync(int id);
 
-    Task<BookModel> UpdateBookAsync(int id, CreateBookModel body);
+    Task<BookModel> UpdateBookAsync(int id, UpdateBookDto body);
 
 }
 
 public class LibraryService : ILibraryService
 { //    private readonly DevAppDbContext _context;
     private readonly IAsyncRepository<BookModel> _bookRepository;
+    private readonly IMapper _mapper;
     private readonly ILogger<LibraryService> _logger;
 
-    public LibraryService(IAsyncRepository<BookModel> bookRepository, ILogger<LibraryService> logger)
+    public LibraryService(IAsyncRepository<BookModel> bookRepository, IMapper mapper, ILogger<LibraryService>? logger)
     {
         _bookRepository = bookRepository ?? throw new ArgumentNullException(nameof(_bookRepository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _mapper = mapper;
     }
     public async Task<IEnumerable<BookModel>> GetBooksAsync()
     {
@@ -39,16 +43,16 @@ public class LibraryService : ILibraryService
 
     }
 
-    public async Task<BookModel> AddBookAsync(CreateBookModel createBook)
+    public async Task<BookModel?> AddBookAsync(CreateBookDto createBook)
     {
         if (createBook == null)
         {
             throw new ArgumentNullException(nameof(createBook), "Book cannot be null.");
         }
 
-        var book = LibraryService.createBook(createBook);
+        var bookModel = _mapper.Map<BookModel>(createBook);
 
-        return await _bookRepository.Add(book);
+        return await _bookRepository.Add(bookModel);
     }
 
     
@@ -63,11 +67,11 @@ public class LibraryService : ILibraryService
         throw new KeyNotFoundException(msg);
     }
 
-    public async Task<BookModel> UpdateBookAsync(int id, CreateBookModel updatedBook)
+    public async Task<BookModel> UpdateBookAsync(int id, UpdateBookDto updateBook)
     {
-        if (updatedBook == null)
+        if (updateBook == null)
         {
-            throw new ArgumentNullException(nameof(updatedBook), "Updated book cannot be null.");
+            throw new ArgumentNullException(nameof(updateBook), "Updated book cannot be null.");
         }
         var existingBook = await _bookRepository.GetById(id);
         if (existingBook == null)
@@ -76,24 +80,15 @@ public class LibraryService : ILibraryService
         }
 
         // Update properties
-        existingBook.Title = updatedBook.Title;
-        existingBook.Author = updatedBook.Author;
-        existingBook.Isbn = updatedBook.Isbn;
-        existingBook.PublishedDate = updatedBook.PublishedDate;
+        existingBook.Title = updateBook.Title;
+        existingBook.Author = updateBook.Author;
+        existingBook.Isbn = updateBook.Isbn;
+        existingBook.PublishedDate = updateBook.PublishedDate;
 
         // Save the changes to the database
         await _bookRepository.Update(existingBook);
 
         return existingBook;
     }
-
-    private static BookModel createBook(CreateBookModel createBook)
-    {
-        var book = new BookModel();
-        book.Title = createBook.Title;
-        book.Author = createBook.Author;
-        book.Isbn = createBook.Isbn;
-        book.PublishedDate = createBook.PublishedDate;
-        return book;
-    }
+    
 }

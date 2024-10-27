@@ -106,7 +106,7 @@ public class LibraryControllerTests(WebApplicationFactory<Program> factory) : Ap
 
         var book = await response.Content.ReadFromJsonAsync<BookWithId>();
         book.Should().NotBeNull();
-        book.Title.Should().Be(updatedBook.Title);
-        book.Author.Should().Be(updatedBook.Author);
+        book?.Title.Should().Be(updatedBook.Title);
+        book?.Author.Should().Be(updatedBook.Author);
     }
 }

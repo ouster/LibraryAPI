@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using LibraryAPI.LibraryService.Entities;
 
 namespace LibraryAPI.LibraryService;
 
@@ -9,7 +10,7 @@ public interface IAsyncRepository<T> where T : BaseEntity
 {
 
     ValueTask<T?> GetById(int id);
-    Task<T> FirstOrDefault(Expression<Func<T, bool>> predicate);
+    Task<T?> FirstOrDefault(Expression<Func<T, bool>> predicate);
 
     Task<T> Add(T entity);
     Task Update(T entity);
