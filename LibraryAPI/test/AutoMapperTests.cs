@@ -26,11 +26,11 @@ public abstract class AutoMapperFixture : IDisposable
     }
 }
 
-public class AutoMapperTest 
+public class AutoMapperTests 
 {
     private readonly IMapper _mapper;
 
-    public AutoMapperTest()
+    public AutoMapperTests()
     {
         _mapper = AutoMapperFixture.MapperFactory();
     }
