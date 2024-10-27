@@ -98,7 +98,7 @@ public class LibraryServiceTests : BaseServiceFixture
 public class BaseServiceFixture
 {
     protected readonly IMapper Mapper;
-    protected Mock<IAsyncRepository<BookModel>> MockRepo = new();
+    protected Mock<BookRepository> MockRepo = new();
     protected readonly Mock<ILogger<LibraryService.LibraryService>> MockLogger = new();
 
     protected BaseServiceFixture()

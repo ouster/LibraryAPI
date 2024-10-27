@@ -42,9 +42,7 @@ public abstract class ApiTestFixture : IClassFixture<WebApplicationFactory<Progr
         });
         Client = factoryWithInMemoryDb.CreateClient();
         
-        _context.Database.EnsureDeleted();
-        _context.Database.EnsureCreated();
-        SeedDatabase();
+        _context.SeedData();
     }
 
     // protected ApiTestFixture(WebApplicationFactory<Program> factory)
@@ -98,6 +96,7 @@ public abstract class ApiTestFixture : IClassFixture<WebApplicationFactory<Progr
         }
     }
 
+    
     public void Dispose()
     {
         _context.Database.EnsureDeleted(); // Clean up database after tests

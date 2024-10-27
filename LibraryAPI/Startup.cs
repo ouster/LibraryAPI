@@ -1,6 +1,7 @@
 using System;
 using AutoMapper;
 using LibraryAPI.LibraryService;
+using LibraryAPI.LibraryService.Models;
 using LibraryAPI.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,7 +38,7 @@ public class Startup
 
         // Register other services
         services.AddScoped<ILibraryService, LibraryService.LibraryService>();
-        services.AddScoped(typeof(IAsyncRepository<>), typeof(AsyncEfRepository<>));
+        services.AddScoped<IBookRepository, BookRepository>();
 
         // Add AutoMapper, controllers, and Swagger
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -91,10 +92,10 @@ public class Startup
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Library API"));
             app.UseDeveloperExceptionPage();
             
-            // Ensure database is created
             using var scope = app.ApplicationServices.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<DevAppDbContext>();
-            context.Database.EnsureCreated();
+            
+            context.SeedData();
             
             // Valid automapper?
             var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
