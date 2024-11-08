@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using LibraryAPI.LibraryService.Entities.Dtos;
 using LibraryAPI.LibraryService.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -45,6 +46,7 @@ namespace LibraryAPI.LibraryService
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     [ApiVersion("0.1")]
+    [Authorize]
     public partial class LibraryController : LibraryBaseController
     {
         private ILibraryService _libraryService;

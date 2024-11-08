@@ -28,7 +28,7 @@ public class GlobalExceptionHandler(RequestDelegate next, ILogger<GlobalExceptio
         {
             // Log the database-related exception
             logger.LogError($"Database error occurred: {dbEx.Message}");
-            throw; // or handle as needed
+            throw; // TODO or handle as needed
         }
         catch (Exception ex)
         {

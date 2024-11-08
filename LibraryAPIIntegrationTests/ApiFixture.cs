@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using LibraryAPI.LibraryService.Models;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Xunit;
 
 namespace LibraryAPIIntegrationTests;

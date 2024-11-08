@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <ImplicitUsings>disable</ImplicitUsings>
+    <ImplicitUsings>enable</ImplicitUsings>
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
 
@@ -12,6 +12,7 @@
     <PackageReference Include="EntityFramework" Version="6.5.1" />
     <PackageReference Include="FluentAssertions" Version="6.12.1" />
     <PackageReference Include="FluentValidation" Version="11.10.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
@@ -19,6 +20,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -27,6 +31,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.0" />
     <PackageReference Include="xunit" Version="2.5.3" />
   </ItemGroup>
 
@@ -40,6 +45,13 @@
     <_ContentIncludedByDefault Remove="LibraryAPIIntegrationTests\obj\LibraryAPIIntegrationTests.csproj.nuget.dgspec.json" />
     <_ContentIncludedByDefault Remove="LibraryAPIIntegrationTests\obj\project.assets.json" />
     <_ContentIncludedByDefault Remove="LibraryAPIIntegrationTests\obj\project.packagespec.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="StartupHelper.cs" />
+    <Compile Remove="src\LibraryService\AuthController.cs" />
+    <Compile Remove="src\LibraryService\Entities\Models\LoginRequest.cs" />
+    <Compile Remove="src\LibraryService\Entities\Models\TokenRequest.cs" />
   </ItemGroup>
 
 </Project>

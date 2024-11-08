@@ -27,7 +27,7 @@ public class BookRepositoryTests : IDisposable
 
         _mockLogger = new Mock<ILogger<BookRepository>>();
         _dbContext = new DevAppDbContext(options, new Mock<ILogger<DevAppDbContext>>().Object);
-        _dbContext.ClearDB();
+        _dbContext.ClearDb();
         _repository = new BookRepository(_dbContext, _mockLogger.Object);
     }
 

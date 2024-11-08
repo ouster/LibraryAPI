@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using LibraryAPI.LibraryService.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using LibraryAPI.LibraryService.Models;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,8 @@ namespace LibraryAPI.LibraryService;
 public class DevAppDbContext(DbContextOptions options, ILogger<DevAppDbContext> logger) : DbContext(options)
 {
     public DbSet<BookModel> Books { get; set; }
+    
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     public const int TitleMaxLength = 100;
     public const int AuthorMaxLength = 50;
@@ -33,7 +36,7 @@ public class DevAppDbContext(DbContextOptions options, ILogger<DevAppDbContext> 
             .HasMaxLength(IsbnMaxLength);
     }
 
-    public void ClearDB()
+    public void ClearDb()
     {
         // Seed data
         Database.EnsureDeleted(); // Clear the database

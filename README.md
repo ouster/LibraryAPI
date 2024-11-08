@@ -1,6 +1,8 @@
 # LibraryAPI
 Test creating a api from openapi spec
 
+Original spec https://libapi.1breadcrumb.com/
+
 ## Test
 
 ### http://localhost:5125/swagger
@@ -37,3 +39,7 @@ can then generate client stubs on demand
 # TODO revisit repository pattern 
 
 # TODO add paging
+
+# Authentication/Authorisation
+Followed this as a guide https://blog.devgenius.io/applying-jwt-access-tokens-and-refresh-tokens-in-asp-net-core-web-api-fc757c9191b9
+as there are many ways to skin the authcat...:lolz-cat: 
