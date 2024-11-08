@@ -1,5 +1,6 @@
 using System.Text;
 using AutoMapper;
+using LibraryAPI;
 using LibraryAPI.LibraryService;
 using LibraryAPI.LibraryService.Entities.Models;
 using LibraryAPI.Middleware;
@@ -69,7 +70,8 @@ builder.Services.AddAuthentication(options =>
                 ValidateLifetime = true,
                 ValidIssuer = jwtSettings.Issuer,
                 ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey ?? throw new InvalidOperationException("Secret Key is empty")))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey ??
+                    throw new InvalidOperationException("Secret Key is empty")))
             };
         }
     });
@@ -131,6 +133,8 @@ if (app.Environment.IsDevelopment())
 
     var bookRepository = scope.ServiceProvider.GetRequiredService<BookRepository>();
     bookRepository.SeedBooksAsync();
+    
+    app.UseMiddleware<FakeJwtAuthorizationMiddleware>();
 }
 else
 {
@@ -142,11 +146,16 @@ app.UseMiddleware<GlobalExceptionHandler>();
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+
 app.UseEndpoints(endpoints => endpoints.MapControllers());
 
 app.Run();
 
 
-public partial class Program { } // allow integration test project to access Program
+public partial class Program
+{
+} // allow integration test project to access Program
