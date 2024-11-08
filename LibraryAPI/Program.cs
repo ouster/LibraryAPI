@@ -80,7 +80,7 @@ builder.Services.AddApiVersioning(options =>
 {
     options.ReportApiVersions = true;
     options.AssumeDefaultVersionWhenUnspecified = true;
-    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.DefaultApiVersion = new ApiVersion(0, 1);
     options.ApiVersionReader = new UrlSegmentApiVersionReader();
 });
 
