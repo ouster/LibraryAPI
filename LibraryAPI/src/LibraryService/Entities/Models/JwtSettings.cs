@@ -1,34 +1,24 @@
 namespace LibraryAPI.LibraryService.Entities.Models;
 
-public record JwtSettings
+public class JwtSettings
 {
-    public JwtSettings(string? SecretKey, string? Issuer, string? Audience, int AccessTokenExpirationMinutes,
-        int RefreshTokenExpirationDays)
+    public JwtSettings(string? secretKey, string? issuer, string? audience, int accessTokenExpirationMinutes,
+        int refreshTokenExpirationDays)
     {
-        this.Issuer = Issuer;
-        this.SecretKey = SecretKey;
-        this.Audience = Audience;
-        this.AccessTokenExpirationMinutes = AccessTokenExpirationMinutes;
-        this.RefreshTokenExpirationDays = RefreshTokenExpirationDays;
+        this.Issuer = issuer;
+        this.SecretKey = secretKey;
+        this.Audience = audience;
+        this.AccessTokenExpirationMinutes = accessTokenExpirationMinutes;
+        this.RefreshTokenExpirationDays = refreshTokenExpirationDays;
     }
 
     public JwtSettings()
     {
     }
-
-    protected internal string? SecretKey { get; }
-    protected internal string? Audience { get; }
-    protected internal int AccessTokenExpirationMinutes { get; }
-    protected internal int RefreshTokenExpirationDays { get; }
-    public string? Issuer { get; init; }
-
-    public void Deconstruct(out string? SecretKey, out string? Issuer, out string? Audience,
-        out int AccessTokenExpirationMinutes, out int RefreshTokenExpirationDays)
-    {
-        SecretKey = this.SecretKey;
-        Issuer = this.Issuer;
-        Audience = this.Audience;
-        AccessTokenExpirationMinutes = this.AccessTokenExpirationMinutes;
-        RefreshTokenExpirationDays = this.RefreshTokenExpirationDays;
-    }
+    
+    public string? SecretKey { get; set; }
+    public string? Audience { get; set; }
+    public int AccessTokenExpirationMinutes { get; set; }
+    public int RefreshTokenExpirationDays { get; set; }
+    public string? Issuer { get; set; }
 }

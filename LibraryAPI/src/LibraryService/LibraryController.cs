@@ -66,6 +66,8 @@ namespace LibraryAPI.LibraryService
         /// </remarks>
         /// <returns>OK</returns>
         [HttpGet("books")]
+        [ProducesResponseType(typeof(IEnumerable<BookWithId>), StatusCodes.Status200OK)]
+        [Produces("application/json")]
         public async Task<ActionResult<IEnumerable<BookWithId>>>  GetBooks()
         {
            var books = await _libraryService.GetBooksAsync();
@@ -80,6 +82,7 @@ namespace LibraryAPI.LibraryService
         /// </remarks>
         /// <returns>Created</returns>
         [HttpPost("book")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<BookWithId>> PostBook([Microsoft.AspNetCore.Mvc.FromBody] Book book)
         {
 
@@ -94,6 +97,9 @@ namespace LibraryAPI.LibraryService
         /// </remarks>
         /// <returns>OK</returns>
         [HttpGet("book/{id}")]
+        [ProducesResponseType(typeof(BookWithId), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Produces("application/json")]
         public async Task<ActionResult<BookWithId>> GetBook(int id)
         {
             try
@@ -116,6 +122,7 @@ namespace LibraryAPI.LibraryService
         [HttpPut("book/{id}")]
         [ProducesResponseType(typeof(BookWithId), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Produces("application/json")]
         public async Task<ActionResult<BookWithId>>  PutBook(int id, [Microsoft.AspNetCore.Mvc.FromBody] Book book)
         {
 

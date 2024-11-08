@@ -2,7 +2,7 @@ using System;
 
 namespace LibraryAPI.LibraryService.Entities.Models;
 
-public record RefreshToken(int Id, string Token, string Username, DateTime ExpirationDate)
+public class RefreshToken(int Id, string Token, string Username, DateTime ExpirationDate)
 {
     public int Id { get; set; } = Id;
     public string Token { get; set; } = Token;

@@ -34,6 +34,7 @@ builder.Services.AddScoped<ILibraryService, LibraryService>();
 
 // Set up database context based on environment
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+Console.WriteLine($"environment: {environment}");
 if (environment == Environments.Development)
 {
     builder.Services.AddDbContext<DevAppDbContext>(options =>
@@ -49,6 +50,8 @@ else
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+Console.WriteLine($"Issuer: {jwtSettings?.Issuer}");
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -66,7 +69,7 @@ builder.Services.AddAuthentication(options =>
                 ValidateLifetime = true,
                 ValidIssuer = jwtSettings.Issuer,
                 ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey ?? throw new InvalidOperationException("Secret Key is empty")))
             };
         }
     });
@@ -107,7 +110,7 @@ builder.Services.AddSwaggerGen(options =>
             {
                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
             },
-            new string[] { }
+            []
         }
     });
 });
